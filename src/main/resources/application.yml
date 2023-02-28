@@ -1,0 +1,45 @@
+eureka:
+  client:
+    service-url:
+      default-zone: "http://localhost:8761/eureka"
+#spring.main.web-application-type=reactive
+server:
+  port: 8082
+  #specify prefix to all controller
+  servlet: contextPath=/ope
+spring:
+  application:
+    name: ope
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    jpa:
+      generate-ddl: true
+    password: Asdfg13092@
+    url: "jdbc:mysql://localhost:3306/spring-security-users"
+    username: root
+  security:
+    oauth2:
+      client:
+        registration:
+          ope-client-oidc:
+            provider: spring
+            client-id: articles-client
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://127.0.0.1:8080/login/oauth2/code/{registrationId}"
+            scope: openid
+            client-name: articles-client-oidc
+          ope-client-authorization-code:
+            provider: spring
+            client-id: articles-client
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://127.0.0.1:8080/authorized"
+            scope: articles.read
+            client-name: articles-client-authorization-code
+        provider:
+          spring:
+            issuer-uri: "http://auth-server:9000"
+    resourceserver:
+      jwt:
+        issuer-uri: "http://auth-server:9000"
